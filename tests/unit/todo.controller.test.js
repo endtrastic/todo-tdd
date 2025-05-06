@@ -130,4 +130,18 @@ dsecribe('TodoController.updateTodo', () => {
         expect(res.statusCode).toBe(200)
         expect(res._getJSONData()).toStrictEqual(newTodo)
     });
+
+    it('should handle errors', async () => {
+        const errorMessage = {message: "Error"}
+        const rejectedPromise = Promise.reject(errorMessage)
+        TodoModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+        await TodoController.updateTodo(req, res, next);
+        expect(next).toHaveBeenCalledWith(errorMessage)
+    });
+    it('should handle error 404', async () => {
+        TodoModel.findByIdAndUpdate.mockReturnValue(null);
+        await TodoController.updateTodo(req, res, next);
+        expect(res.statusCode).toBe(404)
+        expect(res._isEndCalled()).toBeTruthy()
+    });
 })

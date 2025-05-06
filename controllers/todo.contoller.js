@@ -30,15 +30,24 @@ const getTodoById = async (req, res, next) => {
 }
 
 const updateTodo = async (req, res, next) => {
-    const updatedTodo = await TodoModel.findByIdAndUpdate(
-        req.params.todoId,
-        req.body,
-        {
-            new: true,
-            useFindAndModify: FontFaceSetLoadEvent
-        }
-    );
-    res.status(200).json(updatedTodo)
+    try {
+        const updatedTodo = await TodoModel.findByIdAndUpdate(
+            req.params.todoId,
+            req.body,
+            {
+                new: true,
+                useFindAndModify: false
+            }
+        );
+        if (updatedTodo) {
+            res.status(200).json(updatedTodo)
+        } else {
+        res.status(404).send()
+        }        expect(res.body.done).toBe(testData.done)
+
+    } catch(error) {
+        next(error)
+    }
 }
 
 
