@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 async function connect() {
     try {
         await mongoose.connect(
-            "empty", 
+            "This should be here", 
             { useNewUrlParser: true}
         );
         console.log('MongoDB connected');
